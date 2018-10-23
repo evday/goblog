@@ -1,0 +1,80 @@
+{{define "sidebar"}}
+<style>
+  .cloud ul a {
+  padding:4px 12px;
+}
+.cloud ul {
+    padding: 10px;
+    overflow: hidden;
+}
+
+</style>
+<div class="sidebar">
+    <div class="about">
+        <div class="avatar"> <img src="/public/images/avatar.jpg" alt=""> </div>
+        <p class="abname">Coding | Evday</p>
+        <p class="abposition">Python、Golang 爱好者</p>
+        <div class="abtext">Python 开发、Go 初学者,本站基于Golang Gin 框架搭建.</div>
+    </div>
+    <div class="search">
+      <form action="/search" method="post" name="searchform" id="searchform">
+        <input type="hidden" name="_csrf" value="{{.Csrf}}">
+        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='按文章标题搜索'}" type="text">
+        <input name="show" value="title" type="hidden">
+        <input name="tempid" value="1" type="hidden">
+        <input name="tbname" value="news" type="hidden">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
+      </form>
+    </div>
+    <div class="cloud">
+      <h2 class="hometitle">标签云</h2>
+      <ul>
+        {{range tags}}
+        <a href="/tags/{{.Title}}" id="tag">{{.Title}}({{len .Posts}})</a>
+        {{end}} 
+      </ul>
+    </div>
+    <div class="paihang">
+      <h2 class="hometitle">点击排行</h2>
+      <ul>
+        {{range rankPosts}}
+        <li><b><a href="/posts/{{.ID}}" target="_blank">
+          {{$length := len .Title}}
+          {{if ge $length 30}}
+            {{Excerpt .Title 30}}...
+          {{else}}
+            {{.Title}}
+          {{end}}
+        </a></b>
+          <p><i><a href="/posts/{{.ID}}"><img src="{{.Image}}"></a></i>{{Excerpt .Content 50}}</p>
+        </li>
+        {{end}}
+      </ul>
+    </div>
+    <div class="paihang">
+      <h2 class="hometitle">站长推荐</h2>
+      <ul>
+        {{range  recentPosts 4}}
+      
+        <li><b><a href="/posts/{{.ID}}" target="_blank">
+          {{$length := len .Title}}
+          {{if ge $length 30}}
+            {{Excerpt .Title 30}}...
+          {{else}}
+            {{.Title}}
+          {{end}}
+        </a></b>
+          <p><i><a href="/posts/{{.ID}}"><img src="{{.Image}}"></a></i>{{Excerpt .Content 50}}</p>
+        </li>
+        {{end}}
+      </ul>
+    </div>
+    <div class="links">
+      <h2 class="hometitle">友情链接</h2>
+      <ul>
+        <li><a href="http://cnblogs.com/haiyan123" title="海燕的博客">海燕的博客</a></li>
+      </ul>
+    </div>
+  </div>
+
+{{end}}

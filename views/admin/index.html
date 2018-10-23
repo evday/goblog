@@ -1,0 +1,69 @@
+{{define "admin/index"}}
+<link rel="stylesheet" href="/public/css/bootstrap.min.css">
+<script src="/public/js/jquery-3.2.1.min.js"></script>
+<script src="/public/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/public/css/main.css">
+<style>
+/* body,h5,a,button {
+font-size: 1.5rem;
+} */
+.well{
+    margin-top: 0px;
+}
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+                {{template "dashboard/sidebar" .}}
+        </div>
+        
+        <div class="col-sm-9" role="main">
+            <h2>{{.Title}}</h2>
+            <hr>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <!-- <th class="shrink">ID</th>
+                <th>文章名</th>
+                <th class="shrink">是否发表</th>
+                <th class="shrink">创建时间</th>
+                <th class="shrink">操作</th> -->
+                <th >ID</th>
+                <th>文章名</th>
+                <th >是否发表</th>
+                <th >创建时间</th>
+                <th >操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{range .Posts}}
+                <tr>
+                <td>{{.ID}}</td>
+                <td>{{.Title}}</td>
+                <td>
+                    {{if .Published}}
+                    <span class="glyphicon glyphicon-ok"></span>
+                    {{else}}
+                    <span class="glyphicon glyphicon-remove"></span>
+                    {{end}}
+                </td>
+                <td>{{formatDateTime .CreatedAt}}</td>
+                <td>
+                    <a href="/posts/{{.ID}}" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    <a href="/admin/posts/{{.ID}}/edit" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <form class="inline-block" action="/admin/posts/{{.ID}}/delete" method="post">
+                    <input type="hidden" name="_csrf" value="{{$.Csrf}}">
+                    <button type="button" class="btn btn-sm btn-danger" onclick="((confirm('Are you sure')) ? this.form.submit() : null);"><span class="glyphicon glyphicon-remove"></span></button>
+                    </form>
+                </td>
+                </tr>
+            {{end}}
+            </tbody>
+        </table>
+        <div class="actions">
+            <a href="/admin/new_post" class="btn btn-success">添加文章</a>
+        </div>
+        </div>
+    </div>
+</div>
+{{end}}

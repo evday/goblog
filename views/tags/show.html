@@ -1,0 +1,46 @@
+{{define "tags/show"}}
+
+<!doctype html>
+<html>
+<style>
+
+h1.t_nav span a {
+    width: auto;
+    color: #5ea51b;
+    float: none;
+    display: inline-block;
+}
+.sidebar{
+margin-top: 20px;
+}
+h1.t_nav{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+</style>
+{{ template "header" .}}
+<article>
+    {{$title := .Title}}
+    <h1 class="t_nav"><span>您现在的位置是：<a href="/">首页</a>&nbsp;&gt;&nbsp;标签分类&nbsp;&gt;&nbsp;{{.Title}}</span><a href="/" class="n1">网站首页</a><a href="#" class="n2">{{.Title}}</a></h1>
+    <div class="blogs">
+    <div class="mt20"></div>
+      {{range .Tag.Posts}}
+        <li>
+            <h3 class="blogtitle"><a href="/posts/{{.ID}}" target="_blank">{{.Title}}</a></h3>
+            <div class="bloginfo">
+              <p>{{Excerpt .Content 150}}...</p>
+            </div>
+            <div class="autor">
+                {{range .Tags}}
+                <span class="lm"><a href="/" title="{{.Title}}" target="_blank" class="classname">{{.Title}}</a></span>
+                {{end}}
+                <span class="dtime">{{formatDateTime .CreatedAt}}</span>
+                <span class="viewnum">浏览（{{.View}}）</span>
+                <span class="readmore"><a href="/posts/{{.ID}}/{{$title}}">阅读原文</a></span></div>
+        </li>
+      {{end}}
+    </div>
+    {{ template "sidebar" .}}
+</article>
+{{end}}

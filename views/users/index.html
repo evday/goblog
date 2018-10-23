@@ -1,0 +1,56 @@
+{{define "users/index"}}
+<link href="/public/css/bootstrap.min.css" rel="stylesheet">
+<link href="/public/css/bootstrap-theme.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/public/css/main.css">
+<script src="/public/js/jquery-3.2.1.min.js"></script>
+<script src="/public/js/bootstrap.min.js"></script>
+<script src="/public/js/application.js"></script>
+<style>
+    .well{
+    margin-top: 0px;
+    }
+</style>
+<div class="container">
+        <div class="row">
+        <div class="col-sm-3" role="main">
+                {{template "dashboard/sidebar" .}}
+        </div>
+          <div class="col-sm-9" role="main">
+            <h2>{{.Title}}</h2>
+            <hr>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="shrink">ID</th>
+                  <th>用户名</th>
+                  <th>邮箱</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{range .Users}}
+                  <tr>
+                    <td class="shrink">{{.ID}}</td>
+                    <td>{{.Name}}</td>
+                    <td>{{.Email}}</td>
+                    <td>{{formatDateTime .CreatedAt}}</td>
+                    <td>
+                      <a href="/admin/users/{{.ID}}/edit" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                      <form class="inline-block" action="/admin/users/{{.ID}}/delete" method="post">
+                        <input type="hidden" name="_csrf" value="{{$.Csrf}}">
+                        <button type="button" class="btn btn-sm btn-danger" onclick="((confirm('Are you sure')) ? this.form.submit() : null);"><span class="
+                            glyphicon glyphicon-remove"></span></button>
+                      </form>
+                    </td>
+                  </tr>
+                {{end}}
+              </tbody>
+            </table>
+            <div class="actions">
+              <a href="/admin/new_user" class="btn btn-success">New user</a>
+            </div>
+          </div>
+        </div>
+</div>
+{{end}}

@@ -1,0 +1,39 @@
+{{define "header"}}
+<head>
+    <meta charset="utf8">
+    <title>Evday的个人博客</title>
+    <meta name="keywords" content="个人博客" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/public/css/base.css" rel="stylesheet">
+    <link href="/public/css/index.css" rel="stylesheet">
+    <link href="/public/css/m.css" rel="stylesheet">
+    <script>
+    window.onload = function ()
+    {
+        var oH2 = document.getElementsByTagName("h2")[0];
+        var oUl = document.getElementsByTagName("ul")[0];
+        oH2.onclick = function ()
+        {
+            var style = oUl.style;
+            style.display = style.display == "block" ? "none" : "block";
+            oH2.className = style.display == "block" ? "open" : ""
+        }
+    }
+    </script>
+    </head>
+    <body>
+        <header>
+          <div class="tophead">
+            <div class="logo"><a href="/">个人博客</a></div>
+            <nav class="topnav" id="topnav">
+              <ul>
+                <li><a href="/">网站首页</a></li>
+                <li><a href="about.html">关于我</a></li>
+                <li><a href="/login">登录</a></li>
+                <li><a href="/register">注册</a></li>
+              </ul>
+            </nav>
+          </div>
+        </header>
+{{end}}

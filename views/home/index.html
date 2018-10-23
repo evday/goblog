@@ -1,0 +1,74 @@
+{{define "home/index"}}
+<!doctype html>
+<html>
+{{ template "header" .}}
+<style>
+  a.curPage {
+    background-color: #3FB8AF;
+    color: #FFF;
+    font-weight: bold;
+}
+</style>
+<article>
+  <div class="blogs">
+    {{range .pagination.Records}}
+    <li><span class="blogpic"><a href="/posts/{{.ID}}" title="三步实现滚动条触动css动画效果"><img src="{{.Image}}" alt="三步实现滚动条触动css动画效果"></a></span>
+      <h3 class="blogtitle"><a href="/posts/{{.ID}}" target="_blank">{{.Title}}</a></h3>
+      <div class="bloginfo">
+        <p>{{Excerpt .Content 150}}...</p>
+      </div>
+      <div class="autor">
+        {{range .Tags}}
+        <span class="lm"><a href="/" title="{{.Title}}" target="_blank" class="classname">{{.Title}}</a></span>
+        {{end}}
+        <span class="dtime">{{formatDateTime .CreatedAt}}</span>
+        <span class="viewnum">浏览（{{.View}}）</span>
+        <span class="readmore"><a href="/posts/{{.ID}}">阅读原文</a></span></div>
+    </li>
+    {{end}}
+
+
+    <!-- {{range recentPosts 0}}
+      <li> <span class="blogpic"><a href="/posts/{{.ID}}"><img src="{{.Image}}"></a></span>
+        <h3 class="blogtitle"><a href="/posts/{{.ID}}">{{.Title}}</a></h3>
+        <div class="bloginfo">
+          <p>{{Excerpt .Content 150}}...</p>
+        </div>
+        <div class="autor">
+          {{range .Tags}}
+          <span class="lm"><a href="/" title="{{.Title}}" target="_blank" class="classname">{{.Title}}</a></span>
+          {{end}}
+          <span class="dtime">{{formatDateTime .CreatedAt}}</span>
+          <span class="viewnum">浏览（{{.View}}）</span>
+          <span class="readmore"><a href="/posts/{{.ID}}">阅读原文</a></span></div>
+      </li>
+    {{end}} --> 
+
+    <div class="pagelist">
+      <a href="/?page=1">首页</a>
+      <a href="/?page={{.pagination.PrevPage}}">上一页</a>
+      {{$Page := .pagination.Page }}
+      {{range $index, $element := pageList .pagination.TotalPage}}
+        {{if eq $element $Page}}
+        <a href="/?page={{$element}}" class="curPage">{{$element}}</a>&nbsp;
+        {{else}}
+        <a href="/?page={{$element}}" >{{$element}}</a>&nbsp;
+        {{end}}
+
+      {{end}}
+      <a href="/?page={{.pagination.NextPage}}">下一页</a>
+      <a href="/?page={{.pagination.TotalPage}}">尾页</a>
+    </div>
+  </div>
+    {{ template "sidebar" .}}
+</article>
+
+<div class="blank"></div>
+{{ template "footer" .}}
+<script src="/public/js/nav.js"></script>
+
+</body>
+</html>
+{{end}}
+
+

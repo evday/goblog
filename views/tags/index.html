@@ -1,0 +1,51 @@
+{{define "tags/index"}}
+<link href="/public/css/bootstrap.min.css" rel="stylesheet">
+<link href="/public/css/bootstrap-theme.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/public/css/main.css">
+<script src="/public/js/jquery-3.2.1.min.js"></script>
+<script src="/public/js/bootstrap.min.js"></script>
+<script src="/public/js/application.js"></script>
+<style>
+    .well{
+    margin-top: 0px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3" role="main">
+                {{template "dashboard/sidebar" .}}
+        </div>
+        <div class="col-sm-9" role="main">
+            <h2>{{.Title}}</h2>
+            <hr>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>标签名</th>
+                    <th>关联的文章数</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{range .Tags}}
+                    <tr>
+                    <td>{{.Title}}</td>
+                    <td>{{len .Posts}}</td>
+                    <td>
+                        <a href="/tags/{{.Title}}" class="btn btn-sm btn-success"><span class="fa fa-eye"></span></a>
+                        <form class="inline-block" action="/admin/tags/{{.Title}}/delete" method="post">
+                        <input type="hidden" name="_csrf" value="{{$.Csrf}}">
+                        <button type="button" class="btn btn-sm btn-danger" onclick="((confirm('Are you sure')) ? this.form.submit() : null);"><span class="fa fa-times"></span></button>
+                        </form>
+                    </td>
+                    </tr>
+                {{end}}
+                </tbody>
+            </table>
+            <div class="actions">
+                <a href="/admin/new_tag" class="btn btn-success">添加标签</a>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}

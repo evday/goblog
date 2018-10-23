@@ -1,0 +1,15 @@
+{
+    "debug": {
+        "public": "public",
+        "domain": "http://localhost:8080",
+        "session_secret": "session-secret-phrase",
+        "signup_enabled": true,
+        "database": {
+          "ip":"127.0.0.1",
+          "port":"3306",
+          "name":"myblog",
+          "user":"root",
+          "password":""
+        }
+      }
+}

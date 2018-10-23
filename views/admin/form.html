@@ -1,0 +1,129 @@
+{{define "admin/form"}}
+<link href="/public/css/bootstrap.min.css" rel="stylesheet">
+<link href="/public/css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="/public/css/bootstrap-markdown-editor.css" rel="stylesheet">
+<link rel="stylesheet" href="/public/css/main.css">
+
+<script src="/public/js/jquery-3.2.1.min.js"></script>
+<script src="/public/js/bootstrap.min.js"></script>
+<script src="/public/js/application.js"></script>
+<script src="/public/js/ace.js"></script>
+<script src="/public/js/marked.min.js"></script>
+<script src="/public/js/bootstrap-markdown-editor.js"></script>
+<style>
+.well{
+margin-top: 0px;
+}
+.parsley-required{
+    color: red;
+}
+.avatar {
+    position: relative;
+    width: 100px;
+    height: 80px;
+}
+#avatar_file, #avatar_img {
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 80px;
+}
+#avatar_file {
+    opacity: 0;
+}
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+                {{template "dashboard/sidebar" .}}
+        </div>
+        <div class="col-sm-9" role="main">
+            <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form method="post" data-parsley-validate novalidate enctype="multipart/form-data">
+                        <fieldset>
+                            <legend>{{.Title}}</legend>
+                            {{range .Flash}}
+                            <div class="alert alert-danger">{{.}}</div><p>
+                            {{end}}
+                            <input type="hidden" name="id" value="{{.Post.ID}}" >
+                            <input type="hidden" name="_csrf" value="{{.Csrf}}">
+                            
+                            <div class="form-group">
+                                <label class="control-label" for="title">标题：</label>
+                                <input id="title" name="title" value="{{.Post.Title}}" class="form-control" required="" autocapitalize="off" autocorrect="off" autofocus="autofocus" data-parsley-required-message="标题不能为空">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="avatar_file" class="control-label">图片：</label>
+                                <div class="avatar">
+                                    {{if .Post.Image}}
+                                    <a href=""><img src="{{.Post.Image}}" alt="" id="avatar_img"></a>
+                                    {{else}}
+                                    <a href=""><img src="/public/images/zd02.jpg" alt="" id="avatar_img"></a>
+                                    {{end}}
+                                    <input type="file" class="form-control"  id="avatar_file" name="image">
+                                    
+
+                                </div>
+                                
+                            </div>
+            
+                            <div class="form-group">
+                                <label class="control-label" for="ck-content">内容：</label>
+                                <textarea name="content" id="ck-content" required="" data-parsley-required-message="内容不能为空">{{.Post.Content}}</textarea>
+                            </div>
+            
+                            <div class="form-group">
+                                <label class="control-label" for="tags">标签：</label>
+                                <select id="tags" name="tags" class="form-control" multiple="multiple">
+                                    {{$post := .Post}}
+                                    {{range .Tags}}
+                                        {{if $post}}
+                                            <option {{if postHasTag $post .Title}}selected="selected"{{end}}>{{.Title}}</option>
+                                        {{else}}
+                                            <option>{{.Title}}</option>
+                                        {{end}}
+                                    {{end}}
+                                </select>
+                            </div>
+                    
+            
+                            <div class="form-group">
+                            <input id="published" name="published" type="checkbox" value="true" {{if .Post.Published}}checked{{end}} >
+                            <label class="control-label" for="published">Publish</label>
+                            </div>
+            
+                            <input type="submit" class="btn btn-success" value="Submit">
+                            <a class="btn btn-secondary" href="/admin">Cancel</a>
+                        </fieldset>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    jQuery(document).ready(function($) {
+
+        $('#ck-content').markdownEditor({
+            preview: true,
+            onPreview: function (content, callback) {
+                callback( marked(content) );
+            }
+        });
+
+    });
+    //图片预览
+    $("#avatar_file").change(function () {
+        //this.files
+        var ele_file = $(this)[0].files[0];//获取当前文件
+        console.log(typeof (ele_file));
+        var read = new FileReader();//实例化read对象
+        read.readAsDataURL (ele_file);//获取当前文件的url
+        read.onload = function () {
+            $("#avatar_img").attr("src",this.result);//this.result 就是read.readAsDataURL获取到的url路径
+        }
+    });
+</script>
+{{end}}

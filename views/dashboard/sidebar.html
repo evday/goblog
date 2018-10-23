@@ -1,0 +1,33 @@
+{{define "dashboard/sidebar"}}
+<aside class="col-sm-12">
+  <div class="well well-sm user-info">
+    <h5>用户信息</h5>
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownSettingsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="glyphicon glyphicon-cog mr-2"></i>设置
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownSettingsButton">
+        <a class="dropdown-item" href="/"><i class="glyphicon glyphicon-home mr-3"></i>回到主页</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/logout"><i class="glyphicon glyphicon-log-out mr-3"></i>注销</a>
+      </div>
+    </div>
+    <span class="email"></span>
+  </div>
+
+  <ul class="nav flex-column nav-pills">
+    <li class="nav-item">
+      <a class='nav-link {{isActiveLink .Context "/admin/"}}' href="/admin/"><i class="glyphicon glyphicon-pencil mr-3"></i>文章列表</a>
+    </li>
+    <li class="nav-item">
+      <a class='nav-link {{isActiveLink .Context "/admin/tags"}}'href="/admin/tags"><i class="glyphicon glyphicon-tag mr-3"></i>标签列表</a>
+    </li>
+    <li class="nav-item">
+      <a class='nav-link {{isActiveLink .Context "/admin/comments"}}' href="/admin/comments"><i class="glyphicon glyphicon-comment mr-3"></i>评论列表</a>
+    </li>
+    <li class="nav-item">
+      <a class='nav-link {{isActiveLink .Context "/admin/users"}}' href="/admin/users"><i class="glyphicon glyphicon-user mr-3"></i>用户列表</a>
+    </li>
+  </ul>
+</aside>
+{{end}}

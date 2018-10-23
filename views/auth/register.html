@@ -1,0 +1,122 @@
+{{define "auth/register"}}
+<html>
+        <head>
+                <meta charset="UTF-8">
+                <title>Title</title>
+                <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+                <link rel="stylesheet" href="/public/css/main.css">
+                <script src="/public/js/jquery-3.2.1.min.js"></script>
+                <script src="/public/js/bootstrap.min.js"></script>
+                <script src="/public/js/application.js"></script>
+                
+            </head>
+    <body style="background-color: #f8f8f8">
+        <style>
+
+.avatar {
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+.parsley-required {
+    color: red;
+}
+
+#avatar_file, #avatar_img {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+}
+
+#avatar_file {
+    opacity: 0;
+}
+body {
+    font-size: 1.5rem;
+}
+        </style>
+
+<div class="container" style="margin-top: 100px">
+
+    <div class="row col-md-11 ">
+        <div class="col-md-offset-4">
+        <h3>注册新用户</h3>
+
+    </div>
+        <div class="col-md-7 col-md-offset-3" >
+            <hr>
+            <form class="form-horizontal" id="s1" method="post" novalidate action="/register" enctype="multipart/form-data" data-parsley-validate>
+                <input type="hidden" name="_csrf" value="{{.Csrf}}">
+                {{range .Flash}}
+          <div class="alert alert-danger">{{.}}</div><p>
+        {{end}}
+                <div class="form-group">
+                    <label for="inputEmail"
+                           class="col-sm-3 control-label  col-md-offset-1">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label>
+                    <div class="col-md-8">
+                            <input type="email" name="email" class="form-control" id="email" placeholder="邮箱" required="" data-parsley-required-message="请输入您的邮箱">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputRepeatPassword" class="col-sm-3 control-label col-md-offset-1">用&nbsp;&nbsp;户&nbsp;&nbsp;名：</label>
+                    <div class="col-md-8">
+
+                            <input type="text" name="name" class="form-control" id="username" placeholder="用户名" required="" data-parsley-required-message="请输入用户名">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputRepeatPassword" class="col-sm-3 control-label col-md-offset-1">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+                    <div class="col-md-8">
+
+                            <input type="password"  name="password" class="form-control" id="password" placeholder="密码" required="" data-parsley-required-message="请输入您的密码">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputRepeatPassword" class="col-sm-3 control-label col-md-offset-1">确认密码：</label>
+                    <div class="col-md-8">
+
+                            <input type="password" name="passwordrepeat" class="form-control" id="passwordrepeat" placeholder="确认密码" required="" data-parsley-required-message="请再次输入您的密码" data-parsley-equalto="#password" data-parsley-equalto-message="两次输入的密码不一致">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputRepeatPassword" class="col-sm-3 control-label col-md-offset-1">头&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;像：</label>
+                    <div class="col-md-8 avatar">
+                        <a href=""><img src="/public/images/avatar.jpg" alt="" id="avatar_img"></a>
+                        <input type="file" class="form-control" id="avatar_file" name="image">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2" style="margin-left:330px">
+
+                        <input type="submit" value="注&nbsp;&nbsp;册" class="form-control btn-primary" id="register">
+
+                    </div>
+                </div>
+                <div style="margin-left:230px">
+                    <span>点击"注册"按钮,表示您已同意和遵守<a href="">用户协议</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+            //头像预览
+$("#avatar_file").change(function () {
+    //this.files
+    var ele_file = $(this)[0].files[0];//获取当前文件
+    console.log(typeof (ele_file));
+    var read = new FileReader();//实例化read对象
+    read.readAsDataURL (ele_file);//获取当前文件的url
+    read.onload = function () {
+        $("#avatar_img").attr("src",this.result);//this.result 就是read.readAsDataURL获取到的url路径
+    }
+});
+</script>
+    </body>
+</html>
+{{end}}

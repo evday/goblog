@@ -1,0 +1,58 @@
+<!--分页条-->
+{{define "pagination"}}
+<h1>分页</h1>
+{{.pagination.TotalPages}}
+<nav>
+    {{if gt .pagination.TotalPages 1}}
+    <ul {{if .isMobile }} class="pagination mobile-pagination" {{else}} class="pagination  pull-left" {{end}} >
+        {{if .pagination.HasPrev}}
+        {{if .isMobile }}
+        <li><a href="{{.pagination.PageLinkPrev}}">&lt;</a></li>
+        {{else}}
+        <li><a href="{{.pagination.PageLinkFirst}}">首页</a></li>
+        <li><a href="{{.pagination.PageLinkPrev}}">&lt;</a></li>
+        {{end}}
+        {{else}}
+        {{if .isMobile }}
+        <li class="disabled"><a>&lt;</a></li>
+        {{else}}
+        <li class="disabled"><a>首页</a></li>
+        <li class="disabled"><a>&lt;</a></li>
+        {{end}}
+        {{end}}
+
+        {{if .isMobile }}
+        {{range $index, $page := .pagination.Pages 5}}
+        <li {{if $.pagination.IsActive .}} class="active" {{end}}>
+            <a href="{{$.pagination.PageLink $page}}">{{$page}}</a>
+        </li>
+        {{end}}
+        {{else}}
+        {{range $index, $page := .pagination.Pages 9}}
+        <li {{if $.pagination.IsActive .}} class="active" {{end}}>
+            <a href="{{$.pagination.PageLink $page}}">{{$page}}</a>
+        </li>
+        {{end}}
+        {{end}}
+
+        {{if .pagination.HasNext}}
+        {{if .isMobile }}
+        <li><a href="{{.pagination.PageLinkNext}}">&gt;</a></li>
+        {{else}}
+        <li><a href="{{.pagination.PageLinkNext}}">&gt;</a></li>
+        <li><a href="{{.pagination.PageLinkLast}}">尾页</a></li>
+        {{end}}
+        {{else}}
+        {{if .isMobile }}
+        <li class="disabled"><a>&gt;</a></li>
+        {{else}}
+        <li class="disabled"><a>&gt;</a></li>
+        <li class="disabled"><a>尾页</a></li>
+        {{end}}
+        {{end}}
+    </ul>
+    {{end}}
+</nav>
+
+{{end}}
+

@@ -1,0 +1,56 @@
+
+{{define "posts/show"}}
+{{ template "header" .}}
+
+<link href="/public/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body {
+  font: 14px "微软雅黑", Arial, Helvetica, sans-serif;
+  color: #555;
+  background: #f7f7f7;
+}
+h1.t_nav span a {
+    width: auto;
+    color: #5ea51b;
+    float: none;
+    display: inline-block;
+}
+.sidebar{
+  margin-top: 20px;
+}
+.news_author{
+  margin-bottom: 20px;
+}
+#tag {
+  padding-bottom: 28px !important;
+}
+a{
+  color: #555;
+}
+.newsview{
+  border-bottom: #000 2px solid;
+}
+</style>
+<article>
+  <h1 class="t_nav"><span>您现在的位置是：<a href="/">首页</a>&nbsp;&gt;&nbsp;<a href="/posts/{{.Post.ID}}">{{.Post.Title}}</a>&nbsp;&gt;&nbsp;<a href="/tags/{{.Tag}}">{{.Tag}}</a></span><a href="/" class="n1">网站首页</a><a href="/tags/{{.Tag}}" class="n2">{{.Tag}}</a></h1>
+  <div class="infos">
+      <div class="newsview">
+        <h3 class="news_title">{{.Post.Title}}</h3>
+        <div class="news_author"><span class="au01">{{.Post.User.Name}}</span><span class="au02">{{formatDateTime .Post.CreatedAt}}</span><span class="au03">共<b>{{.Post.View}}</b>人围观</span></div>
+        <div class="news_infos" id="newsp">
+            {{noescape .Post.Content}}
+       </div>
+      </div>
+      <div class="nextinfo">
+          {{if .PrePost.Title }}
+          <p>上一篇：<a href="/posts/{{.PrePost.ID}}">{{.PrePost.Title}}</a></p>
+          {{end}}
+          {{if .NextPost.Title}}
+          <p>下一篇：<a href="/posts/{{.NextPost.ID}}">{{.NextPost.Title}}</a></p>
+          {{end}}
+      </div>
+  </div>
+  
+  {{ template "sidebar" .}} 
+</article>
+{{end}}

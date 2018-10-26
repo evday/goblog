@@ -32,3 +32,8 @@ func HomeGet(c *gin.Context){
 	h["pagination"] = paginator
 	c.HTML(http.StatusOK,"home/index",h)
 }
+
+
+func AboutGet(c *gin.Context){
+	c.HTML(http.StatusOK,"home/about",nil)
+}

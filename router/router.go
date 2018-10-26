@@ -40,6 +40,7 @@ func InitRouter() *gin.Engine{
 
 	//用户登录
 	router.GET("/login",controllers.SignInGet)
+	router.GET("/about",controllers.AboutGet)
 	router.POST("/login",controllers.SignInPost)
 	router.GET("/register",controllers.RegisterGet)
 	router.POST("/register",controllers.RegisterPost)

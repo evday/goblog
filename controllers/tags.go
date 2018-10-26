@@ -65,7 +65,8 @@ func TagCreate(c *gin.Context){
 func TagDelete(c *gin.Context){
 	db := models.GetDB()
 	tag := models.Tag{}
-	db.First(&tag,c.Param("title"))
+	db.Where("title = ?", c.Param("title")).First(&tag)
+	
 	if len(tag.Title) == 0{
 		c.HTML(http.StatusNotFound,"errors/404",nil)
 		return 

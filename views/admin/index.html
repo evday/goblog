@@ -49,7 +49,9 @@ font-size: 1.5rem;
                 </td>
                 <td>{{formatDateTime .CreatedAt}}</td>
                 <td>
+                    {{if .Published}}
                     <a href="/posts/{{.ID}}" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    {{end}}
                     <a href="/admin/posts/{{.ID}}/edit" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
                     <form class="inline-block" action="/admin/posts/{{.ID}}/delete" method="post">
                     <input type="hidden" name="_csrf" value="{{$.Csrf}}">

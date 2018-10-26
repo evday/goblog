@@ -34,20 +34,26 @@ func PostGet(c *gin.Context){
 	h["Flash"] = session.Flashes()
 	prepost := models.Post{}
 	nextpost := models.Post{}
-	db.Select("id,title").Order("id desc").Where("id > ?",c.Param("id")).Find(&prepost).Limit(1)
-	db.Select("id,title").Order("id desc").Where("id < ?",c.Param("id")).Find(&nextpost).Limit(1)
-	h["PrePost"] = prepost
-	h["NextPost"] = nextpost
+	db.Select("id,title,published").Where("id > ?",c.Param("id")).Find(&prepost).Limit(1)
+	db.Select("id,title,published").Where("id < ?",c.Param("id")).Find(&nextpost).Limit(1)
 
+	if prepost.Published {
+		h["PrePost"] = prepost
+	}
+	if nextpost.Published {
+		h["NextPost"] = nextpost
+	}
 	tag := c.Param("tag")
-	if tag != "" {
+	if tag == ""{
+		session.Save()
+		c.HTML(http.StatusOK,"posts/show",h)
+	}else {
 		h["Tag"] = tag
-	}else{
-		h["Tag"] = post.Tags[0].Title
+		session.Save()
+		c.HTML(http.StatusOK,"posts/show",h)
 	}
 	
-	session.Save()
-	c.HTML(http.StatusOK,"posts/show",h)
+	
 }
 
 func PostIndex(c *gin.Context) {
@@ -116,6 +122,8 @@ func PostCreate(c *gin.Context) {
 func PostEdit(c *gin.Context){
 	db := models.GetDB()
 	post := models.Post{}
+	var tags []models.Tag
+	db.Find(&tags)
 	db.Preload("Tags").First(&post,c.Param("id"))
 	if post.ID == 0 {
 		c.HTML(http.StatusNotFound,"errors/404",nil)
@@ -124,7 +132,7 @@ func PostEdit(c *gin.Context){
 	h := DefaultH(c)
 	h["Title"] = "编辑文章"
 	h["Post"] = post
-	h["Tags"] = post.Tags
+	h["Tags"] = tags
 	session := sessions.Default(c)
 	h["Flash"] = session.Flashes()
 	session.Save()
@@ -151,6 +159,9 @@ func PostUpdate(c *gin.Context){
 	}
 	content := c.PostForm("content")
 
+	published := c.PostForm("published")
+	
+
 	db.First(&post,c.Param("id"))
 	if post.Image == "" || !strings.Contains(post.Image,filename) {
 		uri,err := UploadPost(c)
@@ -169,6 +180,14 @@ func PostUpdate(c *gin.Context){
 	}
 	post.Content = content
 	post.Tags = tags
+	post.CreatedAt = post.CreatedAt
+
+	if published == "" {
+		post.Published = false
+	}
+	if published == "true" {
+		post.Published = true
+	}
 
 	if err := db.Save(&post).Error;err != nil {
 		c.HTML(http.StatusInternalServerError,"errors/500",nil)
